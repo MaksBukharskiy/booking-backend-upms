@@ -1,6 +1,5 @@
 from sqlalchemy import Column, Integer, String, Float, Boolean, ForeignKey, DateTime, Table
 from sqlalchemy.orm import relationship
-from sqlalchemy.sql import func
 from database import Base
 
 flight_connections = Table(
@@ -48,7 +47,6 @@ class Booking(Base):
     user = relationship("User", back_populates="bookings")
     room = relationship("Room", back_populates="bookings")
 
-
 class Flight(Base):
     __tablename__ = 'flights'
     id = Column(Integer, primary_key=True)
@@ -67,6 +65,6 @@ class FlightBooking(Base):
     user_id = Column(Integer, ForeignKey('users.id'))
     flight_id = Column(Integer, ForeignKey('flights.id'))
     passengers = Column(Integer)
-    booking_date = Column(DateTime, default=datetime.now)
+    booking_date = Column(DateTime)  # 🔥 ИСПРАВЛЕНО
     user = relationship("User", back_populates="flight_bookings")
     flight = relationship("Flight", back_populates="bookings")

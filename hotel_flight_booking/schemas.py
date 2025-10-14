@@ -1,4 +1,4 @@
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, validator, EmailStr
 from datetime import datetime
 from typing import Optional, List
 from enum import Enum
@@ -10,14 +10,8 @@ class RoomType(str, Enum):
 
 class UserCreate(BaseModel):
     name: str
-    email: str 
+    email: EmailStr
     password: str
-
-    @validator('email')
-    def validate_email(cls, v):
-        if '@' not in v:
-            raise ValueError('Invalid email format')
-        return v
 
     @validator('password')
     def password_strength(cls, v):
@@ -189,28 +183,3 @@ class FlightBookingOut(BaseModel):
     
     class Config:
         from_attributes = True
-
-
-
-
-class FlightSearchResponse(BaseModel):
-    id: str  
-    from_city: str
-    to_city: str
-    departure: datetime
-    arrival: datetime
-    price: float
-    available: int
-    tags: List[str] = []
-    connections: List[int] = []
-    duration: Optional[timedelta] = None
-    
-    class Config:
-        from_attributes = True
-
-class FutureDateTime:
-    @classmethod
-    def validate_future(cls, v):
-        if v < datetime.now():
-            raise ValueError('Date must be in the future')
-        return v
