@@ -1,0 +1,7 @@
+# init_db.py
+from database import Base, engine
+import models  # Чтобы Base "увидела" все модели
+
+print("🔧 Создаём таблицы в test.db...")
+Base.metadata.create_all(bind=engine)
+print("✅ Таблицы созданы!")
